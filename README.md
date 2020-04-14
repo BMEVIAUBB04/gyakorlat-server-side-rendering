@@ -486,9 +486,9 @@ Készítsünk egy űrlapot, ami megfelelően felparaméterezi az API kérésünk
 </form>
 
 ```
-</details>
 
 Láthatjuk, hogy az `asp-*` TagHelperek segítségével a megfelelő URL áll elő. Az oldal újratöltését természetesen sokféle módon meg tudnánk akadályozni JavaScriptből, a JSON objektummal is tetszőlegesen dolgozhatnánk tovább.
+</details>
 
 ---
 
