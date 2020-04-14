@@ -446,6 +446,16 @@ public class TermekController : ControllerBase
 
 A megoldás értelemszerűen a megadott paraméterek alapján előállítja az eredmény szűrt listáját. Az eredményeket egy `IQueryable<Termek>` típusú eredményváltozóba gyűjtjük, és minden további szűrési feltétellel ezt szűkítjük tovább.
 
+Ezen túl a `Startup` osztály Configure metódusában szükséges a Controllerekhez tartozó útvonalakat is megfelelőképp felkonfigurálnunk, úgyhogy a végpontok regisztrációját is egészítsük ezzel ki:
+
+``` C#
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapRazorPages();
+});
+```
+
 </details>
 
 Készítsünk egy egyszerű felületet, amivel a szűrést tudjuk tesztelni! A szokásos módon hozzuk létre a `Szures` oldalt, de most ne generáljunk code behindot:
