@@ -9,7 +9,7 @@ Szerver oldali renderelés és egyszerű REST-jellegű webszolgáltatások kész
 A labor elvégzéséhez szükséges eszközök:
 
 - Microsoft SQL Server (LocalDB vagy Express edition, Visual Studio telepítővel telepíthető)
-- Visual Studio 2019 .NET Core 3.1 SDK-val telepítve
+- Visual Studio 2019 .NET 5 SDK-val telepítve
 
 Amit érdemes átnézned:
 
