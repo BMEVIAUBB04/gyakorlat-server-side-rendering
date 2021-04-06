@@ -23,6 +23,8 @@ A gyakorlatok laborvezetővel közösen és önállóan is elvégezhetők jelen 
 
 ## Feladat 0: Kiinduló projekt letöltése, indítása
 
+Megjegyzés: a kiinduló projekt felépítése, a benne történt módosítások analógak az ASP.NET Razor Pages és az ASP.NET Web API laborok között.
+
 Az előző laborokon megszokott adatmodellt fogjuk használni MS SQL LocalDB segítségével, de egy másik elérési útvonalon, hogy tiszta adatbázissal induljunk. Az adatbázis sémájában néhány mező a .NET-ben ismeretes konvencióknak megfelelően átnevezésre került, felépítése viszont megegyezik a korábban megismertekkel.
 
 1. Nyissuk meg a Visual Studio-t, és a megnyíló nyitóképernyőn válasszuk a "Clone or check out code" lehetőséget, és adjuk meg jelen repository git URL-jét és egy megfelelő (otthoni munkavégzés esetén tetszőleges) munkamappát: `https://github.com/BMEVIAUBB04/gyakorlat-server-side-rendering.git`
