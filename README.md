@@ -2,7 +2,7 @@
 
 ## Célkitűzés
 
-Szerver oldali renderelés és egyszerű REST-jellegű webszolgáltatások készítésének alapszintű elsajátítása.
+Szerver oldali renderelés készítésének alapszintű elsajátítása kiegészítő REST-jellegű webszolgáltatásokkal.
 
 ## Előfeltételek
 
@@ -25,7 +25,7 @@ A gyakorlatok laborvezetővel közösen és önállóan is elvégezhetők jelen 
 
 Az előző laborokon megszokott adatmodellt fogjuk használni MS SQL LocalDB segítségével, de egy másik elérési útvonalon, hogy tiszta adatbázissal induljunk. Az adatbázis sémájában néhány mező a .NET-ben ismeretes konvencióknak megfelelően átnevezésre került, felépítése viszont megegyezik a korábban megismertekkel.
 
-1. Nyissuk meg a Visual Studio-t, és a megnyíló nyitóképernyőn válasszuk a "Clone or check out code" lehetőséget, és adjuk meg jelen repository git URL-jét és egy megfelelő (otthoni munkavégzés esetén tetszőleges) munkamappát: `https://github.com/BMEVIAUBB04/gyakorlat-rest-web-api.git`
+1. Nyissuk meg a Visual Studio-t, és a megnyíló nyitóképernyőn válasszuk a "Clone or check out code" lehetőséget, és adjuk meg jelen repository git URL-jét és egy megfelelő (otthoni munkavégzés esetén tetszőleges) munkamappát: `https://github.com/BMEVIAUBB04/gyakorlat-server-side-rendering.git`
 2. A klónozást a Visual Studio el fogja végezni nekünk, megnyitja a repository mappáját. Duplaklikkeljünk a megjelenő Solution Explorer ablakban az `AcmeShop\AcmeShop.sln` fájlra, ami megnyitja a kiinduló projektünket.
 
 A kiinduló solution 2 projektből áll:
