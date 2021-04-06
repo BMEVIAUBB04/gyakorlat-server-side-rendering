@@ -493,9 +493,18 @@ Készítsünk egy űrlapot, ami megfelelően felparaméterezi az API kérésünk
 
 <form asp-controller="Termek" asp-action="GetTermekek" method="get">
 
-    <input class="form-control" name="termekId" type="number" />
-    <input class="form-control" name="minimumNettoAr" type="number" />
-    <input class="form-control" name="maximumNettoAr" type="number" />
+    <div class="form-group">
+        <label for="termekId">Termék ID: </label>
+        <input class="form-control" name="termekId" id="termekId" type="number" />
+    </div>
+    <div class="form-group">
+        <label for="minimumNettoAr">Min. nettó ár: </label>
+        <input class="form-control" name="minimumNettoAr" id="minimumNettoAr" type="number" />
+    </div>
+    <div class="form-group">
+        <label for="maximumNettoAr">Max. nettó ár: </label>
+        <input class="form-control" name="maximumNettoAr" id ="maximumNettoAr"type="number" />
+    </div>
 
     <button class="btn btn-success">Filter!</button>
 
@@ -503,7 +512,7 @@ Készítsünk egy űrlapot, ami megfelelően felparaméterezi az API kérésünk
 
 ```
 
-Láthatjuk, hogy az `asp-*` TagHelperek segítségével a megfelelő URL áll elő, ahová az űrlapot elküldjük. 
+Láthatjuk, hogy az `asp-*` TagHelperek segítségével a megfelelő URL áll elő, ahová az űrlapot elküldjük. Teszteljük az API meghívását a `/Szures` oldalról!
 
 Az oldal újratöltését természetesen sokféle módon meg tudnánk akadályozni JavaScriptből, a JSON objektummal is tetszőlegesen dolgozhatnánk tovább. Ugyanezt a hívást JavaScriptből is elvégezhetnénk (akár felület nélkül), a visszakapott JSON objektumot pedig az üzleti logikában értelemszerűen felhasználhatnánk.
 
