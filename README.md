@@ -73,9 +73,9 @@ Teszteljük az így létrejött alkalmazást, teszteljük a termékekkel kapcsol
 
 ![Scaffolding eredménye](assets/1-scaffolding-5.png)
 
-## Feladat 2: Termék szerkesztés szépítése
+## Feladat 2: Termék szerkesztés és létrehozás szépítése
 
-A termékek szerkesztő oldalán láthatjuk, hogy a generált kódunk felismerte a kapcsolódó entitásokat is, amiket legördülő listából választhatunk ki. Ez nagyon jó, de az ID alapján nehezen tudjuk megmondani a helyes termékkategóriát és ÁFA-kulcsot, így helyesebb volna a nevüket megjeleníteni a felületen.
+A termékek szerkesztő és létrehozás (Edit, Create) oldalain láthatjuk, hogy a generált kódunk felismerte a kapcsolódó entitásokat is, amiket legördülő listából választhatunk ki. Ez nagyon jó, de az ID alapján nehezen tudjuk megmondani a helyes termékkategóriát és ÁFA-kulcsot, így helyesebb volna a nevüket megjeleníteni a felületen.
 
 Ezen felül a címkék sem kifejezetten beszédesek, ugyanis az AfaId mező valójában az ÁFA-kulcs megadására szolgál (természetesen mi a külső kulcsot, nem a konkrét ÁFA-kulcs értékét állítjuk be a modellen).
 
@@ -91,13 +91,15 @@ Használjuk a modell címkék szépítésére a `System.ComponentModel.DataAnnot
 ``` C#
 public IActionResult OnGet()
 {
-   ViewData["AfaId"] = new SelectList(_context.Afa, "Id", "Kulcs");
-   ViewData["KategoriaId"] = new SelectList(_context.Kategoria, "Id", "Nev");
+   ViewData["AfaId"] = new SelectList(_context.Afa, "Id", /* "Id" helyett: */ "Kulcs");
+   ViewData["KategoriaId"] = new SelectList(_context.Kategoria, "Id", /* "Id" helyett: */ "Nev");
    return Page();
 }
 ```
 
-A fentin túl érdemes a modellünket típusosan kezelni, így a Page-ben ne a "gyengén típusos" `ViewData`-t és `SelectList`-et, hanem a modell osztályt és az egyes `SelectListItem`-eket hasznosítsuk!
+Ha kipróbáljuk az új Edit oldalt, láthatjuk, hogy most már nem a ÁFA-kulcs ID-ja, hanem neve szerepel a felületen a legördülőben. Az első közelítésű megoldásunk már tehát szépen működik, viszont a kód még nem kifejezetten sokatmondó.
+
+Érdemes a ViewData dinamikus kezelése helyett a modellünket statikusan típusosan kezelni, így a Page-ben ne a "gyengén típusos" `ViewData`-t és `SelectList`-et, hanem a modell osztályt és az egyes `SelectListItem`-eket hasznosítsuk!
 
 ``` C#
 public List<SelectListItem> AfaKulcsok { get; private set; }
@@ -110,6 +112,8 @@ public IActionResult OnGet()
    return Page();
 }
 ```
+
+Értelemszerűen az Edit oldalon ne a teljes `OnGet()` metódust cseréljük le, hanem elegendő a két lista példányosítását.
 
 ``` HTML
 <div class="form-group">
@@ -159,9 +163,9 @@ namespace AcmeShop.Data
 
 ```
 
-Vegyük észre, hogy ezzel a további felületeken is frissültek a címkék!
+Vegyük észre, hogy ezzel a további felületeken is frissültek a címkék! Fontos ezen felül, hogy bár az entitás forráskódját bővítettük attribútumokkal, ezáltal maga az adatbázis sémája sem és az ORM modellünk sem frissült.
 
-Tanulság tehát: a scaffolding segítségével akár jelentős mennyiségű boilerplate-kódot tudunk generálni, amivel teljes táblák teljes CRUD műveletei megvalósíthatók. Ezek a generált kódok természetesen nem tökéletesek, módosítsunk bele bátran, ahol szükséges.
+Tanulság tehát: a scaffolding segítségével akár jelentős mennyiségű boilerplate-kódot tudunk generálni, amivel teljes táblák teljes CRUD műveletei megvalósíthatók. Ezek a generált kódok természetesen nem tökéletesek, módosítsunk bele bátran, ahol szükséges. Sőt, ha kicsit utánanézünk, mi is generálódott összességében, valójában egy minimális reflection segítségével a kódot futási időben is generálhatnánk, nem szükséges a scaffolding segítségével a boilerplate-et elkészíteni. Végeredményben viszont egy hasznos eszköz ahhoz, hogy a legegszerűbb funkciókat már gyakorlatilag készen kaphatjuk, és tetszőlegesen módosíthatunk utána.
 
 </details>
 
@@ -300,7 +304,9 @@ A fetch API segítségével meghívjuk a `/TermekLista/{kategoriaId}` URL-t, aho
 }
 ```
 
-A Page létrehozásához kattintsunk jobb egérrel a Pages elemen, majd `Add` -> `Razor Page...`, és hozzuk létre az ábrán látható módon a oldalt!
+Ne felejtsük el a jobb oldali oszlopot ellátni a `termekek` ID-val, és megfelelően módosítani a `RenderKategoria` metódusunkban az `a` elem `href` attribútumát! A `href="javascript:"` szintaxis helyett használhatnánk az `a` elem `onclick` attribútumát is eseménykezelő feliratkoztatására.
+
+A `"/TermekLista/" + kategoriaId` URL-en figyelő Page létrehozásához kattintsunk jobb egérrel a Pages elemen, majd `Add` -> `Razor Page...`, és hozzuk létre az ábrán látható módon a oldalt! Visual Studio verziónként a következő lépések minimálisan eltérhetnek. Végeredményben két fájlnak kell létrejönnie (egy `TermekLista.cshtml` és egy `TermekLista.cshtml.cs` fájlnak), a lent megadott tartalommal.
 
 ![Add](assets/4-partial-ajax-1.png)
 
@@ -308,9 +314,15 @@ A Page létrehozásához kattintsunk jobb egérrel a Pages elemen, majd `Add` ->
 
 ![TermekLista.cshtml](assets/4-partial-ajax-3.png)
 
-Az oldal tartalma az alábbi legyen:
+Az oldal code behind modell osztálya az alábbi legyen:
 
 ``` C#
+
+using AcmeShop.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
+//...
+
 public class TermekListaModel : PageModel
 {
     private readonly AcmeShopContext _dbContext;
@@ -357,7 +369,7 @@ Végül lekérdezi a kategóriában vagy bármely leszármazottjában szereplő 
 
 ``` HTML
 @page "{kategoriaId:int}"
-@model AcmeShop.Web.Pages.Shared.TermekListaModel
+@model AcmeShop.Web.Pages.TermekListaModel
 @{ Layout = null; }
 
 <h1>@Model.Kategoria.Nev</h1>
@@ -408,12 +420,16 @@ Végül valósítsunk meg egy egyszerű lekérést ASP.NET MVC Web API segítsé
 
 Vegyünk fel egy új mappát Controllers néven a Pages mellé!
 
-Vegyünk fel ebbe a mappába egy új üres API Controllert (jobb klikk -> Add -> Controller..., majd API Controller - Empty). Nevezzük `TermekController`nek.
+Vegyünk fel ebbe a mappába egy új üres API Controllert (jobb klikk -> Add -> Controller..., majd API Controller - Empty). Nevezzük `TermekController`nek. Érdekesség, hogy itt is használhatnánk boilerplate generátort (scaffolding)/DB lekérdezésekre felkészített API Controllert.
 
 <details>
 <summary>Megoldás</summary>
 
 ``` C#
+using AcmeShop.Data;
+using Microsoft.EntityFrameworkCore;
+//...
+
 [Route("api/[controller]")]
 [ApiController]
 public class TermekController : ControllerBase
@@ -458,7 +474,7 @@ app.UseEndpoints(endpoints =>
 
 </details>
 
-Készítsünk egy egyszerű felületet, amivel a szűrést tudjuk tesztelni! A szokásos módon hozzuk létre a `Szures` oldalt, de most ne generáljunk code behindot:
+Készítsünk egy egyszerű felületet, amivel a szűrést tudjuk tesztelni! A szokásos módon hozzuk létre a `Szures` oldalt, de most ne generáljunk code behindot (vagy Razor View-t hozzunk létre):
 
 ![Szűrés oldal létrehozása](assets/5-web-api-1.png)
 
@@ -487,7 +503,11 @@ Készítsünk egy űrlapot, ami megfelelően felparaméterezi az API kérésünk
 
 ```
 
-Láthatjuk, hogy az `asp-*` TagHelperek segítségével a megfelelő URL áll elő. Az oldal újratöltését természetesen sokféle módon meg tudnánk akadályozni JavaScriptből, a JSON objektummal is tetszőlegesen dolgozhatnánk tovább.
+Láthatjuk, hogy az `asp-*` TagHelperek segítségével a megfelelő URL áll elő, ahová az űrlapot elküldjük. 
+
+Az oldal újratöltését természetesen sokféle módon meg tudnánk akadályozni JavaScriptből, a JSON objektummal is tetszőlegesen dolgozhatnánk tovább. Ugyanezt a hívást JavaScriptből is elvégezhetnénk (akár felület nélkül), a visszakapott JSON objektumot pedig az üzleti logikában értelemszerűen felhasználhatnánk.
+
+Vegyük észre, hogy a Razor Pages és MVC (Web API) boldogan elférnek egymás mellett. Láttuk, hogy AJAX kérést tudtunk Razor Page irányába is küldeni, viszont ha csak nyers JSON objektumot szeretnénk használni kommunikációra (és pl. a kliensre bízni bizonyos renderelési feladatokat), akkor dönthetünk, hogy Web API jellegű konstrukciót használunk (Controllereket), vagy a Razor Pages ún. `page handler` mechanizmusát használjuk. Utóbbi esetén egy-két kisebb megkötés érvényesül (pl. az URL nem szabályozható annyira részletesen, mint Web API esetén), de ha az alkalmazásunk 100% Razor Pages, akkor érdemes lehet egyébként is ezt a mechanizmust alkalmazni.
 </details>
 
 ---
