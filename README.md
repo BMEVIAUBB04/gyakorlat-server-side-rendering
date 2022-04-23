@@ -98,7 +98,7 @@ Vegyük észre, hogy nem állítottuk be az `<a>` elem `href` tulajdonságát, h
 
 Teszteljük az így létrejött alkalmazást, teszteljük a termékekkel kapcsolatos funkciókat! A tesztelt oldalak forráskódját is tekintsük át (a kontrollert és a nézeteket és is)!
 
-![Scaffolding eredménye](assets/1-scaffolding-5.png)
+![Scaffolding eredménye](assets/termek_list_browser.png)
 
 A legtöbb funkció alapvetően működőképes, de lehet találni hibákat, kényelmetlenségeket. Például:
 - A törlés általában csak akkor működik, ha általunk felvett termékről van szó (például a _Create New_ link segítségével). A legtöbb alapból felvett terméknek ugyanis van már valamilyen érintettsége idegen kulcs kényszerben.
@@ -369,7 +369,7 @@ A megoldás vázlata:
 
 ## Feladat 5: Legördülő menük felhasználóbarátabbá tétele
 
-A korábbi feladatok alapján a kontrollerben lévő minden _SelectList_ konstruktorhívást módosítsd, hogy a legörülő menük felhasználóbarátabbak legyenek. Az áfa azonosító helyett a felirat az áfakulcs legyen, kategória azonosító helyett pedig a kategória neve. Csak a `string` konstans (macskakörmös) paramétereket kell módosítani. `string` konstans helyett használj `nameof` operátort.
+A korábbi feladatok alapján a kontrollerben lévő minden _SelectList_ konstruktorhívást módosítsd, hogy a legörülő menük felhasználóbarátabbak legyenek. Az áfa azonosító helyett a felirat az áfakulcs legyen, kategória azonosító helyett pedig a kategória neve. Csak a `string` konstans (macskakörmös) paramétereket kell módosítani. `string` konstans (macskaköröm) helyett használj `nameof` operátort.
 
 ---
 
