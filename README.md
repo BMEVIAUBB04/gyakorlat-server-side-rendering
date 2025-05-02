@@ -9,7 +9,7 @@ Egyszerű szerver oldalon renderelt felületek készítésének alapszintű elsa
 A labor elvégzéséhez szükséges eszközök:
 
 - Microsoft SQL Server (LocalDB vagy Express edition, Visual Studio telepítővel telepíthető)
-- Visual Studio 2022 .NET 6 SDK-val telepítve
+- Visual Studio 2022 .NET 8 SDK-val telepítve
 
 Amit érdemes átnézned:
 
@@ -33,13 +33,14 @@ A kiinduló solution egyelőre egy projektből áll:`AcmeShop.Data`: EF modellt,
 1. Adjunk a solutionhöz egy új web projektet
     - Típusa: ASP.NET Core Web App (Model-View-Controller) (**nem Web Api!, nem sima Web App, fontos a zárójeles rész!**)
     - Neve: *AcmeShop.Mvc*
-    - Framework: .NET 6.0
+    - Framework: .NET 8.0
     - Authentication type: *None*
-    - HTTPS, Docker: kikapcsolni
+    - HTTPS, Docker, Aspire: kikapcsolni
+    - Do not use top-level statement: kikapcsolva
 
 1. Függőségek felvétele az új projekthez
     - adjuk meg projektfüggőségként az `AcmeShop.Data`-t
-    - adjuk hozzá a *Microsoft.EntityFrameworkCore.Design* NuGet csomagot
+    - adjuk hozzá a *Microsoft.EntityFrameworkCore.Design* NuGet csomag 8.0.13-as verzióját
 
 1. Adatbáziskapcsolat, EF beállítása
     - connection string beállítása a konfigurációs fájlban (appsettings.json). A nyitó `{` jel után
@@ -71,12 +72,15 @@ A kiinduló solution egyelőre egy projektből áll:`AcmeShop.Data`: EF modellt,
 
 Az eddig legenerált MVC oldalak nem használták az adatbázisunkat. Vegyünk fel új kontrollereket és nézeteket, melyek segítségével le tudjuk kérdezni az adatbázist (a kontroller feladata) és az eredményt HTML-be tudjuk formázni (ez a nézetek feladata)! A leggyorsabb módja ennek a kódgenerálás (scaffolding).
 
-1. Adjunk hozzá az MVC projekthez a *Microsoft.VisualStudio.Web.CodeGeneration.Design* NuGet csomagot.
+1. Adjunk hozzá az MVC projekthez a *Microsoft.VisualStudio.Web.CodeGeneration.Design* NuGet csomag 8.0.7-es verzióját (Default project AcmeShop.Mvc legyen):
+    ```powershell
+    Install-Package Microsoft.VisualStudio.Web.CodeGeneration.Design -Version 8.0.7 
+    ```
 1. Az AcmeShopContext.cs alján (_Data projekt_) kommentezzük vissza az `AcmeShopContextFactory` osztályt. (Erre nem kellene szükség legyen, valószínűleg a generátorban lévő bug miatt kell mégis.)
 1. Fordítsuk az MVC projektet.
 1. PMC-ben telepítsük az ASP.NET Core kódgeneráló eszközt, ha még korábban nem telepítettük az adott gépen
     ```powershell
-    dotnet tool install -g dotnet-aspnet-codegenerator
+    dotnet tool install -g dotnet-aspnet-codegenerator --version 8.0.7
     ```
 1. Lépjünk be a projekt könyvtárába
     ```powershell
