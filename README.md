@@ -72,8 +72,9 @@ A kiinduló solution egyelőre egy projektből áll:`AcmeShop.Data`: EF modellt,
 
 Az eddig legenerált MVC oldalak nem használták az adatbázisunkat. Vegyünk fel új kontrollereket és nézeteket, melyek segítségével le tudjuk kérdezni az adatbázist (a kontroller feladata) és az eredményt HTML-be tudjuk formázni (ez a nézetek feladata)! A leggyorsabb módja ennek a kódgenerálás (scaffolding).
 
-1. Adjunk hozzá az MVC projekthez a *Microsoft.VisualStudio.Web.CodeGeneration.Design* NuGet csomag 8.0.7-es verzióját (Default project AcmeShop.Mvc legyen):
+1. Adjunk hozzá az MVC projekthez a *Microsoft.VisualStudio.Web.CodeGeneration.Design* NuGet csomag 8.0.7-es verzióját és a *Install-Package Microsoft.EntityFrameworkCore.Tools* 8.0.13-es verzióját (Default project AcmeShop.Mvc legyen):
     ```powershell
+    Install-Package Microsoft.EntityFrameworkCore.Tools -Version 8.0.13  
     Install-Package Microsoft.VisualStudio.Web.CodeGeneration.Design -Version 8.0.7 
     ```
 1. Az AcmeShopContext.cs alján (_Data projekt_) kommentezzük vissza az `AcmeShopContextFactory` osztályt. (Erre nem kellene szükség legyen, valószínűleg a generátorban lévő bug miatt kell mégis.)
