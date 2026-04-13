@@ -22,9 +22,8 @@ Amit érdemes átnézned:
 
 Az előző laborokon megszokott adatmodellt fogjuk használni MS SQL LocalDB segítségével. Az adatbázis sémájában néhány mező a .NET-ben ismeretes konvencióknak megfelelően átnevezésre került, felépítése viszont megegyezik a korábban megismertekkel.
 
-1. Töltsük le a korábban már használt GitHub repository-t a repository főoldaláról (https://github.com/BMEVIAUBB04/gyakorlat-rest-web-api > *Code* gomb, majd *Download ZIP*) vagy a közvetlen [letöltő link](https://github.com/BMEVIAUBB04/gyakorlat-rest-web-api/archive/refs/heads/master.zip) segítségével. 
-2. Csomagoljuk ki
-3. Nyissuk meg a kicsomagolt mappa AcmeShop alkönyvtárban lévő solution fájlt.
+1. Klónozd a GitHub Classroom feladat elfogadása után létrejött repository-t. 
+2. Nyisd meg a repository AcmeShop alkönyvtárban lévő solution fájlt.
 
 A kiinduló solution egyelőre egy projektből áll:`AcmeShop.Data`: EF modellt, a hozzá tartozó kontextust (`AcmeShopContext`) tartalmazza. Hasonló az EF Core gyakorlaton generált kódhoz, de ez Code-First migrációt is tartalmaz (`Migrations` almappa).
 
@@ -216,14 +215,14 @@ A termékek szerkesztő és létrehozás (Edit, Create) oldalain láthatjuk, hog
 Az adatbázisban a termék neve legfeljebb 50 karakter hosszú lehet. Bár az adatbázis nem kényszeríti ki, az ár és a raktárkészlet esetében csak pozitív (vagy nulla) értékeknek van létjogosultsága. Érvényesítsük ezeket a validációs szabályokat!
 
 1. A `Termek` típus (_Data_ projekt) vonatkozó property-jeire helyezzünk el [modell validációs attribútumokat](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-6.0#built-in-attributes).
-    
+   
     ```csharp
     [MaxLength(50)]
     public string? Nev { get; set; }
-
+   
     [Range(0, double.MaxValue, ErrorMessage = "A termék ára nem lehet negatív")]
     public double? NettoAr { get; set; }
-
+   
     [Range(0, int.MaxValue, ErrorMessage = "A termék raktárkészlete nem lehet negatív")]
     public int? Raktarkeszlet { get; set; }
     ```
@@ -233,7 +232,7 @@ Az adatbázisban a termék neve legfeljebb 50 karakter hosszú lehet. Bár az ad
 2. Próbáljuk ki a validációt valamelyik termék szerkesztésével. Az oldal HTML forrásában ellenőrizhetjük, hogy a maximális szöveghosszt a HTML `input` mezőre tett [`maxlength`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/maxlength) attribútummal oldotta meg az ASP.NET Core. A raktárkészlet és az ár ellenőrzése viszont csak a mentés gomb hatására szerveroldalon történik meg. Ezt is ellenőrizhetjük, ha a HTTP POST kérésre reagáló `Edit` kontrollerműveletre teszünk töréspontot. A művelet kódjában látható, hogy az ellenőrzés eredményét a `ModelState.IsValid` property lekérdezésével kapjuk meg.
 
 3. A legtöbb ellenőrzés annyira egyszerű, hogy  böngészőben futó JavaScript kóddal is ellenőrizhető, a szerverhez fordulni ezért felesleges. Az ASP.NET Core számos beépített validációs attribútumhoz legenerálja a kliensoldali ellenőrzéshez szükséges kódot, HTML attribútumokat. Az ellenőrzést a böngészőben a [jQuery űrlap validációs könyvtár](https://github.com/jquery-validation/jquery-validation) végzi. Azon nézetekben, ahol kliensoldali validációt akarunk használni ezt a JavaScript könyvtárat hivatkozni kell. A hivatkozások már meg vannak írva a _Views/Shared/__ValidationScriptsPartial.cshtml_ nézetfájlban. A layout nézetünk másrészről eleve definiál egy helyet (section) ahová a nézeteknek ezeket a hivatkozásokat elhelyezni érdemes. A _Views/Shared/__Layout.cshtml_ végén látható a szekció definííciója:
-    
+   
     ```razor
     @await RenderSectionAsync("Scripts", required: false)
     ```
